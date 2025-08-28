@@ -1,30 +1,70 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-require('dotenv').config();
-const { DbConnection } = require('./DB/connection');
-// Fix path: folder is `Routes` and file is `postRouters.js`
-const postRoutes = require('./Routes/postRouters');
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const rateLimit = require("express-rate-limit");
+require("dotenv").config();
+const { DbConnection } = require("./DB/connection");
+const { notFound, errorHandler } = require("./Middleware/errorHandler");
+const postRoutes = require("./Routes/postRouters");
+const authRoutes = require("./Routes/authRoutes");
+const path = require("path");
+const uploadRoutes = require("./Routes/uploadRoutes");
 
 DbConnection();
 
 const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
+  origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
   credentials: true,
 };
 
-app.use(express.json());
-app.use(cors(corsOptions));
+// Rate limiters
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 10,
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
-// health
-app.get('/home', (req, res) => {
-  res.send('Server is running...');
+const searchLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
-// posts API
-app.use('/api/posts', postRoutes);
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors(corsOptions));
 
-// ...existing code...
+// Serve uploaded files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// health
+app.get("/home", (req, res) => {
+  res.send("Server is running...");
+});
+
+// auth API (rate limited)
+app.use("/api/auth", authRoutes);
+
+// posts API: apply search limiter on read endpoints
+app.use(
+  "/api/posts",
+  (req, res, next) => {
+    if (req.method === "GET") return searchLimiter(req, res, next);
+    next();
+  },
+  postRoutes
+);
+
+// upload API
+app.use("/api/upload", uploadRoutes);
+
+// 404 + centralized error handler
+app.use(notFound);
+app.use(errorHandler);
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);

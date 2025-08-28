@@ -1,13 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, index: true },
     authorName: { type: String, required: true, trim: true },
-    coverImage: { type: String, default: '' },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true,
+      required: false,
+    },
+    coverImage: { type: String, default: "" },
     tags: { type: [String], default: [], index: true },
-    excerpt: { type: String, default: '' },
+    excerpt: { type: String, default: "" },
     content: { type: String, required: true },
     published: { type: Boolean, default: true },
     publishedAt: { type: Date, default: Date.now },
@@ -16,25 +22,47 @@ const PostSchema = new mongoose.Schema(
 );
 
 // Text index to support simple search
-PostSchema.index({ title: 'text', excerpt: 'text', content: 'text' });
+PostSchema.index({ title: "text", excerpt: "text", content: "text" });
 
 function toSlug(str) {
   return String(str)
     .toLowerCase()
     .trim()
-    .replace(/['"]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/['"]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Generate unique slug by checking for duplicates
+async function generateUniqueSlug(title, excludeId = null) {
+  let baseSlug = toSlug(title);
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    const query = { slug };
+    if (excludeId) query._id = { $ne: excludeId };
+
+    const existing = await mongoose.model("Post").findOne(query);
+    if (!existing) return slug;
+
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
 }
 
 // Auto-fill slug and excerpt
-PostSchema.pre('validate', function (next) {
-  if (!this.slug && this.title) this.slug = toSlug(this.title);
+PostSchema.pre("validate", async function (next) {
+  if (!this.slug && this.title) {
+    this.slug = await generateUniqueSlug(this.title, this._id);
+  }
   if (!this.excerpt && this.content) {
-    const text = String(this.content).replace(/<[^>]*>/g, '').trim();
+    const text = String(this.content)
+      .replace(/<[^>]*>/g, "")
+      .trim();
     this.excerpt = text.slice(0, 160);
   }
   next();
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model("Post", PostSchema);
