@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # MERN Stack Blog Platform
 
 A full-stack blog application built with MongoDB, Express.js, React, and Node.js. This platform provides a complete blogging experience with user authentication, post management, file uploads, and a responsive user interface.
