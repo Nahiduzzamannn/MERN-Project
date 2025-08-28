@@ -1,28 +1,13 @@
-import { useEffect,useState } from "react";
-import "./App.css"
-import axios from "axios";
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.jsx';
+import Post from './pages/Post.jsx';
 
 function App() {
-  const [data,setData] = useState("");
-   useEffect(() => {
-    axios.get("http://localhost:3000/home").then((res) => {
-      console.log(res.data);
-      setData(res.data);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
-
   return (
-    <>
-      <div>
-        <h1 className ='text-3xl font-bold underline'>
-          {data}
-        </h1>
-
-
-      </div>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/post/:slug" element={<Post />} />
+    </Routes>
   )
 }
 
