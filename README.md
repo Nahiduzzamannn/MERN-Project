@@ -1,1 +1,1 @@
-# Mern Stack Bloog Project.
+# Mern Stack Blog Project.
