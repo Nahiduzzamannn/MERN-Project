@@ -1,28 +1,46 @@
-import { useEffect, useState } from 'react';
-import { fetchPosts, fetchTags } from '../services/api';
-import PostCard from '../components/PostCard';
+import { useEffect, useState } from "react";
+import { fetchPosts, fetchTags } from "../services/api";
+import PostCard from "../components/PostCard";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [tags, setTags] = useState([]);
-  const [search, setSearch] = useState('');
-  const [tag, setTag] = useState('');
+  const [search, setSearch] = useState("");
+  const [tag, setTag] = useState("");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
-  useEffect(() => { fetchTags().then(setTags).catch(() => setTags([])); }, []);
+  useEffect(() => {
+    fetchTags()
+      .then(setTags)
+      .catch(() => setTags([]));
+  }, []);
 
   useEffect(() => {
     let ignore = false;
     setLoading(true);
     setPage(1);
     fetchPosts({ page: 1, limit: 10, search, tag })
-      .then((res) => { if (!ignore) { setPosts(res.data); setHasMore(res.hasMore); } })
-      .catch(() => { if (!ignore) { setPosts([]); setHasMore(false); } })
-      .finally(() => { if (!ignore) setLoading(false); });
-    return () => { ignore = true; };
+      .then((res) => {
+        if (!ignore) {
+          setPosts(res.data);
+          setHasMore(res.hasMore);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setPosts([]);
+          setHasMore(false);
+        }
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+    return () => {
+      ignore = true;
+    };
   }, [search, tag]);
 
   const loadMore = async () => {
@@ -57,14 +75,21 @@ export default function Home() {
           onChange={(e) => setQuery(e.target.value)}
           className="flex-1 border border-slate-300 rounded px-3 py-2"
         />
-        <button type="submit" className="px-4 py-2 rounded bg-slate-900 text-white">Search</button>
+        <button
+          type="submit"
+          className="px-4 py-2 rounded bg-slate-900 text-white"
+        >
+          Search
+        </button>
       </form>
 
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           <button
-            className={`px-3 py-1 rounded-full border ${!tag ? 'bg-slate-900 text-white' : ''}`}
-            onClick={() => setTag('')}
+            className={`px-3 py-1 rounded-full border ${
+              !tag ? "bg-slate-900 text-white" : ""
+            }`}
+            onClick={() => setTag("")}
           >
             All
           </button>
@@ -72,7 +97,9 @@ export default function Home() {
             <button
               key={t}
               className={`px-3 py-1 rounded-full border ${
-                tag.toLowerCase() === String(t).toLowerCase() ? 'bg-slate-900 text-white' : ''
+                tag.toLowerCase() === String(t).toLowerCase()
+                  ? "bg-slate-900 text-white"
+                  : ""
               }`}
               onClick={() => setTag(t)}
             >
@@ -83,7 +110,9 @@ export default function Home() {
       )}
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((p) => <PostCard key={p.slug} post={p} />)}
+        {posts.map((p) => (
+          <PostCard key={p.slug} post={p} />
+        ))}
       </div>
 
       <div className="flex justify-center my-6">
@@ -93,7 +122,7 @@ export default function Home() {
             onClick={loadMore}
             className="px-4 py-2 rounded bg-slate-900 text-white disabled:opacity-50"
           >
-            {loading ? 'Loading...' : 'Load more'}
+            {loading ? "Loading..." : "Load more"}
           </button>
         ) : (
           <span className="text-slate-500">No more posts</span>
