@@ -242,7 +242,7 @@ exports.updatePost = async (req, res, next) => {
     for (const k of fields) {
       if (typeof req.body[k] !== "undefined") {
         if (k === "content") {
-          post.content = sanitizeHtml(String(req.body[k]), sanitizeOptions);
+          post[k] = sanitizeHtml(req.body[k], sanitizeOptions);
         } else {
           post[k] = req.body[k];
         }
@@ -250,9 +250,9 @@ exports.updatePost = async (req, res, next) => {
     }
 
     if (typeof req.body.published !== "undefined") {
-      if (req.body.published && !post.publishedAt)
+      if (req.body.published && !post.publishedAt) {
         post.publishedAt = new Date();
-      if (!req.body.published) post.publishedAt = null;
+      }
     }
 
     await post.save();
