@@ -43,7 +43,7 @@ const sanitizeOptions = {
   allowProtocolRelative: false,
 };
 
-// GET /api/posts?search=&tag=&page=1&limit=10
+
 exports.getPosts = async (req, res, next) => {
   try {
     const page = toInt(req.query.page, 1);
@@ -84,7 +84,7 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
-// GET /api/posts/:slug
+
 exports.getPostBySlug = async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -98,7 +98,7 @@ exports.getPostBySlug = async (req, res, next) => {
   }
 };
 
-// GET /api/posts/tags
+
 exports.getTags = async (req, res, next) => {
   try {
     const tags = await Post.distinct("tags", { published: true });
@@ -109,7 +109,7 @@ exports.getTags = async (req, res, next) => {
   }
 };
 
-// GET /api/posts/mine
+
 exports.getMyPosts = async (req, res, next) => {
   try {
     const items = await Post.find({ userId: req.user._id })
@@ -124,7 +124,7 @@ exports.getMyPosts = async (req, res, next) => {
   }
 };
 
-// GET /api/posts/:id/edit
+
 exports.getPostByIdForEdit = [
   param("id").isMongoId(),
   async (req, res, next) => {
@@ -155,7 +155,7 @@ exports.getPostByIdForEdit = [
   },
 ];
 
-// Validation for authoring
+
 exports.validateCreatePost = [
   body("title").trim().isLength({ min: 3 }).withMessage("Title is required"),
   body("authorName")
