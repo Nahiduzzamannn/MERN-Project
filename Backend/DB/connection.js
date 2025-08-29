@@ -7,7 +7,6 @@ const DbConnection = async () => {
       process.env.MONGODB_URI ||
       "mongodb://localhost:27017/medium_clone";
 
-    // Disable autoIndex in production
     if (process.env.NODE_ENV === "production") {
       mongoose.set("autoIndex", false);
     }

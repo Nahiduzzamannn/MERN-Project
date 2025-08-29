@@ -18,8 +18,8 @@ export default function Editor() {
     title: "",
     authorName: "",
     coverImage: "",
-    tags: "", // comma-separated
-    content: "", // HTML
+    tags: "",
+    content: "",
     published: false,
   });
   const [loading, setLoading] = useState(isEdit);
@@ -33,14 +33,12 @@ export default function Editor() {
   const [characterCount, setCharacterCount] = useState(0);
   const [estimatedReadTime, setEstimatedReadTime] = useState(0);
 
-  // Auto-save functionality
   useEffect(() => {
     if (!isEdit || !form.title) return;
 
     const autoSaveTimer = setTimeout(() => {
       if (form.title.trim() && form.content.trim()) {
         setAutoSaveStatus("Saving...");
-        // Here you could implement auto-save logic
         setTimeout(() => setAutoSaveStatus("Saved"), 1000);
       }
     }, 3000);
@@ -48,12 +46,11 @@ export default function Editor() {
     return () => clearTimeout(autoSaveTimer);
   }, [form.title, form.content, isEdit]);
 
-  // Update word count and reading time
   useEffect(() => {
-    const text = form.content.replace(/<[^>]*>/g, ""); // Remove HTML tags
+    const text = form.content.replace(/<[^>]*>/g, "");
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const characters = form.content.length;
-    const readTime = Math.ceil(words / 200); // 200 words per minute
+    const readTime = Math.ceil(words / 200);
 
     setWordCount(words);
     setCharacterCount(characters);
@@ -97,13 +94,11 @@ export default function Editor() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setUploadError("File size must be less than 5MB");
       return;
     }
 
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       setUploadError("Please select a valid image file");
       return;
@@ -137,7 +132,6 @@ export default function Editor() {
       start + textToInsert.length;
     textarea.focus();
 
-    // Update form state
     setForm((f) => ({ ...f, content: textarea.value }));
   };
 
@@ -182,7 +176,6 @@ export default function Editor() {
     setSaving(true);
     setError("");
 
-    // Enhanced validation
     const title = form.title.trim();
     const author = form.authorName.trim();
     const content = String(form.content || "").trim();
@@ -258,7 +251,6 @@ export default function Editor() {
 
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Header */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div>
@@ -345,7 +337,6 @@ export default function Editor() {
             </div>
           </div>
 
-          {/* Error Alert */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl mb-6 flex items-center space-x-2 animate-fadeIn">
               <svg
@@ -369,9 +360,7 @@ export default function Editor() {
                 showPreview ? "lg:grid-cols-2" : "lg:grid-cols-1"
               }`}
             >
-              {/* Editor Column */}
               <div className="space-y-6">
-                {/* Post Details */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <span className="mr-2">📝</span>
@@ -379,7 +368,6 @@ export default function Editor() {
                   </h2>
 
                   <div className="space-y-4">
-                    {/* Title */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Title *
@@ -399,7 +387,6 @@ export default function Editor() {
                       </div>
                     </div>
 
-                    {/* Author Name */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Author Name *
@@ -414,7 +401,6 @@ export default function Editor() {
                       />
                     </div>
 
-                    {/* Tags */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Tags
@@ -445,7 +431,6 @@ export default function Editor() {
                   </div>
                 </div>
 
-                {/* Cover Image */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <span className="mr-2">🖼️</span>
@@ -540,7 +525,6 @@ export default function Editor() {
                   </p>
                 </div>
 
-                {/* Content Editor */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold text-gray-900 flex items-center">
@@ -553,7 +537,6 @@ export default function Editor() {
                     </div>
                   </div>
 
-                  {/* Formatting Toolbar */}
                   <div className="border border-gray-200 rounded-lg mb-4 p-3 bg-gray-50">
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -628,7 +611,6 @@ export default function Editor() {
                   </div>
                 </div>
 
-                {/* Publishing Options */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                     <div className="flex items-center space-x-3 mb-4 sm:mb-0">
@@ -715,7 +697,6 @@ export default function Editor() {
                 </div>
               </div>
 
-              {/* Preview Column */}
               {showPreview && (
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -724,7 +705,6 @@ export default function Editor() {
                   </h2>
 
                   <div className="space-y-4">
-                    {/* Preview Title */}
                     {form.title && (
                       <div>
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -736,7 +716,6 @@ export default function Editor() {
                       </div>
                     )}
 
-                    {/* Preview Cover Image */}
                     {form.coverImage && (
                       <div className="mb-4">
                         <img
@@ -747,7 +726,6 @@ export default function Editor() {
                       </div>
                     )}
 
-                    {/* Preview Tags */}
                     {form.tags && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {form.tags.split(",").map((tag, index) => {
@@ -764,7 +742,6 @@ export default function Editor() {
                       </div>
                     )}
 
-                    {/* Preview Content */}
                     {form.content && (
                       <div
                         className="prose max-w-none text-sm"

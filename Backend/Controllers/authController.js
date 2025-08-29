@@ -93,7 +93,6 @@ exports.logout = async (req, res) => {
 };
 
 exports.me = async (req, res) => {
-  // If unauthenticated, return null user with 200 to simplify clients
   if (!req.user) return res.json({ user: null });
   res.json({ user: req.user.toSafeJSON ? req.user.toSafeJSON() : req.user });
 };

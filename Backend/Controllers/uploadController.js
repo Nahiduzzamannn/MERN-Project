@@ -1,11 +1,9 @@
-// filepath: Backend/Controllers/uploadController.js
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 
 const UPLOAD_DIR = path.join(__dirname, "..", "uploads");
 
-// Ensure upload directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 }
@@ -39,14 +37,13 @@ const fileFilter = (_req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 exports.uploadMiddleware = upload.single("image");
 
 exports.handleUpload = (req, res) => {
   if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-  // Build a public URL to access the uploaded file
   const fileName = req.file.filename;
   const url = `${req.protocol}://${req.get("host")}/uploads/${fileName}`;
   res.status(201).json({ url, filename: fileName });

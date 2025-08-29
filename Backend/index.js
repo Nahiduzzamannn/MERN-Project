@@ -18,14 +18,6 @@ const corsOptions = {
   credentials: true,
 };
 
-// Rate limiters
-// const authLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 10,
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// });
-
 const searchLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 60,
@@ -37,18 +29,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
-// Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// health
 app.get("/home", (req, res) => {
   res.send("Server is running...");
 });
 
-// auth API (rate limited)
 app.use("/api/auth", authRoutes);
 
-// posts API: apply search limiter on read endpoints
 app.use(
   "/api/posts",
   (req, res, next) => {
@@ -58,10 +46,8 @@ app.use(
   postRoutes
 );
 
-// upload API
 app.use("/api/upload", uploadRoutes);
 
-// 404 + centralized error handler
 app.use(notFound);
 app.use(errorHandler);
 

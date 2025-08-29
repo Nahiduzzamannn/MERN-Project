@@ -1,0 +1,70 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: blog-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: blog_db
+    volumes:
+      - mongodb_data:/data/db
+      - ./Backend/scripts:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "27017:27017"
+    networks:
+      - blog-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: blog-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/blog_db?authSource=admin
+      JWT_SECRET: your_super_secret_jwt_key_change_in_production
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_ORIGIN: http://localhost:5173
+      CORS_ORIGIN: http://localhost:5173
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - blog-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: blog-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - blog-network
+    environment:
+      - VITE_API_URL=http://localhost:3000
+
+volumes:
+  mongodb_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+networks:
+  blog-network:
+    driver: bridge

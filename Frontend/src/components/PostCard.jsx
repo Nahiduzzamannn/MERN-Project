@@ -125,7 +125,6 @@ function PostCard({ post, viewMode = "grid" }) {
     );
   }
 
-  // Grid view (default)
   return (
     <article
       className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group animate-fadeInUp"
@@ -146,12 +145,10 @@ function PostCard({ post, viewMode = "grid" }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-          {/* Reading time badge */}
           <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-medium text-gray-700">
             {getReadingTime(post.content || post.excerpt)}
           </div>
 
-          {/* Featured tag for popular posts */}
           {post.tags?.includes("featured") && (
             <div className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full px-3 py-1 text-xs font-bold shadow-lg">
               ⭐ Featured
@@ -161,7 +158,6 @@ function PostCard({ post, viewMode = "grid" }) {
       )}
 
       <div className="p-5">
-        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
           {(post.tags || []).slice(0, 2).map((t) => (
             <span
@@ -178,19 +174,16 @@ function PostCard({ post, viewMode = "grid" }) {
           )}
         </div>
 
-        {/* Title */}
         <h2 className="text-lg font-bold mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-200">
           <Link className="hover:underline" to={`/post/${post.slug}`}>
             {post.title}
           </Link>
         </h2>
 
-        {/* Excerpt */}
         <p className="text-gray-600 text-sm line-clamp-3 mb-4 leading-relaxed">
           {post.excerpt}
         </p>
 
-        {/* Author and Date */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex items-center">
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
@@ -204,7 +197,6 @@ function PostCard({ post, viewMode = "grid" }) {
             </div>
           </div>
 
-          {/* Read more indicator */}
           <div className="flex items-center text-indigo-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -217,7 +209,6 @@ function PostCard({ post, viewMode = "grid" }) {
         </div>
       </div>
 
-      {/* Hover overlay for better click affordance */}
       <div className="absolute inset-0 bg-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
     </article>
   );

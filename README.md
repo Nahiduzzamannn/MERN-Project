@@ -51,43 +51,43 @@ A full-stack blog application built with MongoDB, Express.js, React, and Node.js
 
 ```
 ├── Backend/
-│   ├── Controllers/          # Route controllers
+│   ├── Controllers/
 │   │   ├── authController.js
 │   │   ├── postController.js
 │   │   └── uploadController.js
 │   ├── DB/
-│   │   └── connection.js     # Database connection
-│   ├── Middleware/           # Custom middleware
+│   │   └── connection.js
+│   ├── Middleware/
 │   │   ├── auth.js
 │   │   └── errorHandler.js
-│   ├── Models/               # Database models
+│   ├── Models/
 │   │   ├── Post.js
 │   │   └── User.js
-│   ├── Routes/               # API routes
+│   ├── Routes/
 │   │   ├── authRoutes.js
 │   │   ├── postRouters.js
 │   │   └── uploadRoutes.js
-│   ├── scripts/              # Utility scripts
+│   ├── scripts/
 │   │   ├── build-indexes.js
 │   │   └── seed.js
-│   ├── uploads/              # Uploaded files
-│   ├── index.js              # Server entry point
+│   ├── uploads/
+│   ├── index.js
 │   └── package.json
 ├── Frontend/
 │   ├── src/
-│   │   ├── components/       # Reusable components
+│   │   ├── components/
 │   │   │   ├── Footer.jsx
 │   │   │   ├── Navbar.jsx
 │   │   │   ├── PostCard.jsx
 │   │   │   └── PrivateRoute.jsx
-│   │   ├── context/          # React context
+│   │   ├── context/
 │   │   │   ├── AuthContext.jsx
 │   │   │   ├── AuthContextBase.js
 │   │   │   └── useAuth.js
-│   │   ├── hooks/            # Custom hooks
+│   │   ├── hooks/
 │   │   │   ├── useCachedResource.js
 │   │   │   └── useDebouncedValue.js
-│   │   ├── pages/            # Page components
+│   │   ├── pages/
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── Editor.jsx
 │   │   │   ├── Home.jsx
@@ -95,10 +95,10 @@ A full-stack blog application built with MongoDB, Express.js, React, and Node.js
 │   │   │   ├── Post.jsx
 │   │   │   ├── PostDetail.jsx
 │   │   │   └── Signup.jsx
-│   │   ├── services/         # API services
+│   │   ├── services/
 │   │   │   └── api.js
-│   │   ├── App.jsx           # Main app component
-│   │   └── main.jsx          # Entry point
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   ├── public/
 │   ├── index.html
 │   ├── package.json
@@ -141,55 +141,40 @@ A full-stack blog application built with MongoDB, Express.js, React, and Node.js
 Create a `.env` file in the Backend directory:
 
 ```env
-# Database
 MONGODB_URI=mongodb://localhost:27017/blog_db
-# or for MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/blog_db
 
-# JWT
 JWT_SECRET=your_super_secret_jwt_key
 JWT_EXPIRES_IN=7d
 
-# Server
 PORT=3000
 NODE_ENV=development
 
-# Frontend URL (for CORS)
 FRONTEND_ORIGIN=http://localhost:5173
 ```
 
 ### Running the Application
 
-1. **Start the Backend Server**
+#### Development Mode
 
-   ```bash
-   cd Backend
-   npm run dev
-   ```
+**Backend:**
 
-   Server will run on `http://localhost:3000`
+```bash
+cd Backend
+npm run dev
+```
 
-2. **Start the Frontend Development Server**
+**Frontend:**
 
-   ```bash
-   cd Frontend
-   npm run dev
-   ```
+```bash
+cd Frontend
+npm run dev
+```
 
-   Frontend will run on `http://localhost:5173`
+#### Production Mode
 
-3. **Seed the Database (Optional)**
-
-   ```bash
-   cd Backend
-   npm run seed
-   ```
-
-4. **Build Indexes (Optional)**
-   ```bash
-   cd Backend
-   npm run build-indexes
-   ```
+```bash
+docker-compose up --build
+```
 
 ## 📚 API Endpoints
 
@@ -289,9 +274,6 @@ This project is licensed under the MIT License.
 
 **MD. Nahiduzzaman**
 
----
-
 ⭐ If you found this project helpful, please give it a star!
-=======
+
 # Mern Stack Blog Project.
->>>>>>> eacad44376a9c6615c799de4ef84c175e98557b3

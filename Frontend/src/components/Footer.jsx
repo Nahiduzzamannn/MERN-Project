@@ -72,9 +72,7 @@ export default function Footer() {
   return (
     <footer className="bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -87,7 +85,6 @@ export default function Footer() {
               community of passionate writers and readers.
             </p>
 
-            {/* Social Links */}
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <a
@@ -104,7 +101,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-white">
               Quick Links
@@ -134,7 +130,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-white">
               Categories
@@ -151,7 +146,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Subscription */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-white">
               Stay Updated
@@ -204,7 +198,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="border-t border-white/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
@@ -235,7 +228,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Back to Top Button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 hover:scale-110 z-50"

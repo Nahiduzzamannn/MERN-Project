@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 const axios = require("axios");
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -58,14 +57,13 @@ async function run() {
       .join("");
     const content = `<h2>${title}</h2>${paragraphs}<p><strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.</p>`;
 
-    // pick 1-3 random tags
     const tagCount = randInt(1, 3);
     const tags = Array.from(
       { length: tagCount },
       () => TAG_POOL[randInt(0, TAG_POOL.length - 1)]
     );
 
-    const published = Math.random() > 0.2; // 80% published
+    const published = Math.random() > 0.2;
     const daysAgo = randInt(1, 60);
     const publishedAt = published
       ? new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000)
@@ -79,14 +77,13 @@ async function run() {
         slug
       )}/1200/630`,
       tags: Array.from(new Set(tags)),
-      excerpt: "", // auto-filled by hook
+      excerpt: "",
       content,
       published,
       publishedAt,
     };
   });
 
-  // Remove duplicates by slug
   const existingSlugs = new Set(
     (
       await Post.find({ slug: { $in: docs.map((d) => d.slug) } }).select("slug")

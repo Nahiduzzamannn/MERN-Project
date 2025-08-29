@@ -21,7 +21,6 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Text index to support simple search
 PostSchema.index({ title: "text", excerpt: "text", content: "text" });
 
 function toSlug(str) {
@@ -33,7 +32,6 @@ function toSlug(str) {
     .replace(/^-+|-+$/g, "");
 }
 
-// Generate unique slug by checking for duplicates
 async function generateUniqueSlug(title, excludeId = null) {
   let baseSlug = toSlug(title);
   let slug = baseSlug;
@@ -51,7 +49,6 @@ async function generateUniqueSlug(title, excludeId = null) {
   }
 }
 
-// Auto-fill slug and excerpt
 PostSchema.pre("validate", async function (next) {
   if (!this.slug && this.title) {
     this.slug = await generateUniqueSlug(this.title, this._id);

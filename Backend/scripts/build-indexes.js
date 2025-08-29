@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -14,7 +13,6 @@ async function run() {
   await mongoose.connect(uri);
   console.log("Connected to DB");
 
-  // syncIndexes aligns DB indexes with schema definitions
   const results = await Promise.all([Post.syncIndexes(), User.syncIndexes()]);
 
   console.log("Indexes synced for Post and User");
