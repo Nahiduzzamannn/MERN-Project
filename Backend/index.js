@@ -14,7 +14,7 @@ const uploadRoutes = require("./Routes/uploadRoutes");
 DbConnection();
 
 const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
+  origin:"*",
   credentials: true,
 };
 

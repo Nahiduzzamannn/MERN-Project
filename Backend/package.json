@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "seed": "node scripts/seed.js",
     "build-indexes": "node scripts/build-indexes.js",
     "lint": "echo 'no linter configured'"
