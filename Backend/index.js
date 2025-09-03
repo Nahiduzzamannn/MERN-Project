@@ -14,7 +14,7 @@ const uploadRoutes = require("./Routes/uploadRoutes");
 DbConnection();
 
 const corsOptions = {
-  origin:"*",
+  origin: process.env.CLIENT_URL,
   credentials: true,
 };
 
@@ -28,7 +28,7 @@ const searchLimiter = rateLimit({
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
-
+app.use(cors());
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
