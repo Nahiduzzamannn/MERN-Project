@@ -14,7 +14,7 @@ const uploadRoutes = require("./Routes/uploadRoutes");
 DbConnection();
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: "*",
   credentials: true,
 };
 
